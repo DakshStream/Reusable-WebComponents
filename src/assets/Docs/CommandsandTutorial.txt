@@ -1,0 +1,44 @@
+Create a new application
+Creart elibrary inside it
+Expose component of library and export it
+Build library
+Install angular/element comptaible with ng verison
+Rebuild library
+
+in app.module do this
+export class AppModule { 
+
+  /**
+   *
+   */
+  constructor(private injector: Injector) {}
+
+  ngDoBootstrap() {
+    const el = createCustomElement(SharedWebCompComponent, {injector: this.injector});
+    //SharedWebCompComponent exposed from library will come as you type
+
+    customElements.define('shared-web-comp-from-other-angular-repo', el);
+  }
+
+}
+
+Then being in application do ng build --output-hashing none 
+it will create a prod build of the application in dist and we will have the three files main.js, ployfills.js & runtime.js
+We have to bundle them to a single shareable js files
+in terminal being on project folder run -- Get-content dist/learnweb-compo/runtime.js, dist/learnweb-compo/polyfills.js, dist/learnweb-compo/main.js | Set-Content btn-compo-from-other-repo.js
+
+
+What the Command Does
+
+1. Reads the files (Get-Content): It reads the code inside three specific JavaScript files (runtime.js, polyfills.js, and main.js) from your Angular/build directory.
+2. Combines them (|): The pipe operator passes the text content of all three files down the line sequentially.
+3. Writes to a new file (Set-Content): It merges and saves all of that combined code into a single new file called btn-compo-from-other-repo.js.
+This is a common technique used to create a single, shareable Web Component (or micro-frontend) out of an Angular build so it can be easily imported into another project.
+
+Now it will create a new file btn-comp-from-other........ in project root, aligned with package.json
+
+Now you can use it any html, React.js project, Angular, Vue, C# etc, keep the file in assets folder of any angular repo to use it.
+Then write script tag in index.html with src of that file in that current repo.
+Use selector provided by the first repo team in any component
+// You can also deploy to Npm package, install it or use 
+
